@@ -16,6 +16,7 @@ exports.EmployeesPage = class EmployeesPage {
     this.successMessage = page.getByText(/added to BrightHR Lite/i);
     this.addAnotherEmployeeButton = page.getByRole('button', { name: 'Add another employee' });
     this.closeModalButton = page.getByRole('button', { name: 'Close modal' });
+    this.employeeCard = this.page.locator('div:has(a[data-testid="EditButton"])');
   }
 
   async verifyEmployeesPageVisible() {
@@ -27,7 +28,7 @@ exports.EmployeesPage = class EmployeesPage {
         await expect(this.formHeader).toBeVisible();
   }
 
- async addEmployeeDataAndSave(employee) {
+  async addEmployeeDataAndSave(employee) {
         await this.firstNameInput.fill(employee.firstName);
         await this.lastNameInput.fill(employee.lastName);
         await this.emailInput.fill(employee.email);
@@ -53,11 +54,19 @@ exports.EmployeesPage = class EmployeesPage {
         await expect(this.pageHeader).toBeVisible();
   }
 
-  async verifyCreatedEmployeesAreDisplayed(...employees) {
-      for (const employee of employees) {
-        await expect(this.page.getByText(employee.firstName)).toBeVisible();
-        await expect(this.page.getByText(employee.lastName)).toBeVisible();
-        await expect(this.page.getByText(employee.jobTitle)).toBeVisible();
+   async verifyCreatedEmployeesAreDisplayed(...employees) {
+        for (const employee of employees) {
+            await expect(
+              this.#getEmployeeCard(employee.firstName, employee.lastName, employee.jobTitle)
+            ).toBeVisible();
         }
-  }
+   }
+
+    #getEmployeeCard(firstName, lastName, jobTitle) {
+      const fullName = `${firstName} ${lastName}`;
+      return this.employeeCard
+            .filter({ hasText: fullName })
+            .filter({ hasText: jobTitle })
+            .first();
+      }
 };
