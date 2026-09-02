@@ -17,7 +17,7 @@ test.beforeEach(async ({ page }) => {
   await loginPage.loginToBrightHRSandbox();
 });
 
-test('Add Two Employee Records and Verify Success Messages', async ({}) => {
+test('Add Two Employee Records and Verify They Are Displayed Within Employees Page', async ({}) => {
   await sideMenuNavHelper.navigateToEmployeesPage();
   await employeesPage.verifyEmployeesPageVisible();
   await employeesPage.clickAddEmployeeButton();

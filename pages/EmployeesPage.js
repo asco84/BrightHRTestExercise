@@ -65,8 +65,8 @@ exports.EmployeesPage = class EmployeesPage {
    #getEmployeeCard(firstName, lastName, jobTitle) {
         const fullName = `${firstName} ${lastName}`;
         return this.employeeCard
-            .filter({ hasText: fullName })
-            .filter({ hasText: jobTitle })
+            .filter({ hasText: new RegExp(`^${fullName}$`, 'i') })
+            .filter({ hasText: new RegExp(`^${jobTitle}$`, 'i') })
             .first();
    }
 };

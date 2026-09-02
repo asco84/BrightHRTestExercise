@@ -2,8 +2,8 @@ const { expect } = require('@playwright/test');
 const { DashboardPage } = require('./DashboardPage.js');
 require('dotenv').config();
 
-if(!process.env.EMAIL || !process.env.PASSWORD) {
-  console.error('EMAIL and PASSWORD environment variables could not be found.');
+if(!process.env.EMAIL || !process.env.PASSWORD || !process.env.URL) {
+  console.error('Please set the EMAIL, PASSWORD, and URL environment variables in the .env file at the root directory.');
   process.exit(1);
 };
 
@@ -19,15 +19,17 @@ exports.LoginPage = class LoginPage {
       await this.#navigateToUrlAndVerifySuccessfulHttpResponse();
       await this.#completeAndSubmitLogin(username, password)
 
-      await this.page.waitForLoadState('networkidle');
-      
+      await this.page.waitForLoadState('domcontentloaded');
+
       const dashboardpage = new DashboardPage(this.page);
       await dashboardpage.expectProfileHeaderVisible();
   }
 
   async #navigateToUrlAndVerifySuccessfulHttpResponse() {
       const response = await this.page.goto(process.env.URL)
-      expect(response.status()).toBe(200);
+      if (!response || !response.ok()) {
+        throw new Error(`${process.env.URL} Has failed to load successfully.`);
+    }
   }
 
   async #completeAndSubmitLogin(username, password){

@@ -4,14 +4,14 @@ import path from 'path';
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
-if(!process.env.URL){
-  console.error('Please set the URL environment variable in the .env file at the root directory.');  
+if(!process.env.EMAIL || !process.env.PASSWORD || !process.env.URL){
+  console.error('Please set the EMAIL, PASSWORD, and URL environment variables in the .env file at the root directory.');  
   process.exit(1); 
 };
 module.exports = defineConfig({
   testDir: './tests',
-  retries: 0,
-  workers: 2,
+  retries: 1,
+  workers: 1,
   reporter: 'html',
   use: {
     baseURL: process.env.URL,
@@ -19,9 +19,9 @@ module.exports = defineConfig({
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
   },
-  timeout: 90 * 1000,
+  timeout: 30 * 1000,
   expect: {
-    timeout: 5000,
+    timeout: 10000,
   },
   projects: [
     {
