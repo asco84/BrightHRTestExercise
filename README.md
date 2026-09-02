@@ -38,7 +38,7 @@ This project is an automated test suite for the BrightHR Lite application, focus
    EMAIL=your-email@example.com
    PASSWORD=your-password
    ```
-Note: .env file containing user credentials **MUST NOT** be commited to repository
+Note: .env file containing visible user credentials **MUST NOT** be commited to repository. Add to .gitignore.
 
 ## Running Tests
 
