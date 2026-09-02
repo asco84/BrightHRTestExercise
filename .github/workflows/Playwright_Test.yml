@@ -1,11 +1,14 @@
 name: Playwright Tests
 
+run-name: ${{ github.actor }} - ${{ github.ref_name }} #${{ github.run_number }}
+
 on:
   workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout code
@@ -15,6 +18,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
 
       - name: Install dependencies
         run: npm ci
@@ -22,13 +34,27 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Generate .env file
-        env:
-          BRIGHTHRLITE_URL: ${{ vars.BRIGHTHRLITE_URL }}
-          BRIGHTHRLITE_EMAIL: ${{ secrets.BRIGHTHRLITE_EMAIL }}
-          BRIGHTHRLITE_PASSWORD: ${{ secrets.BRIGHTHRLITE_PASSWORD }}
-        run: envsubst < ./setup/env > .env
+      - name: Create .env file
+        run: |
+          echo "URL=${{ vars.BRIGHTHRLITE_URL }}" > .env
+          echo "EMAIL=${{ secrets.BRIGHTHRLITE_EMAIL }}" >> .env
+          echo "PASSWORD=${{ secrets.BRIGHTHRLITE_PASSWORD }}" >> .env
 
       - name: Run Playwright tests
         run: npx playwright test
 
+      - name: Upload HTML Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
+
+      - name: Upload test traces
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-traces
+          path: test-results/
+          retention-days: 7
