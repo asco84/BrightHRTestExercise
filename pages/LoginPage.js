@@ -19,7 +19,7 @@ exports.LoginPage = class LoginPage {
       await this.#navigateToUrlAndVerifySuccessfulHttpResponse();
       await this.#completeAndSubmitLogin(username, password)
 
-      await this.page.waitForLoadState('domcontentloaded');
+      await this.page.waitForLoadState('networkidle');
 
       const dashboardpage = new DashboardPage(this.page);
       await dashboardpage.expectProfileHeaderVisible();
