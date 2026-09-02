@@ -18,6 +18,9 @@ exports.LoginPage = class LoginPage {
   async loginToBrightHRSandbox(username=process.env.EMAIL, password=process.env.PASSWORD) {
       await this.#navigateToUrlAndVerifySuccessfulHttpResponse();
       await this.#completeAndSubmitLogin(username, password)
+
+      await this.page.waitForLoadState('networkidle');
+      
       const dashboardpage = new DashboardPage(this.page);
       await dashboardpage.expectProfileHeaderVisible();
   }
