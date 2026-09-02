@@ -53,20 +53,20 @@ exports.EmployeesPage = class EmployeesPage {
         await this.closeModalButton.click();
         await expect(this.pageHeader).toBeVisible();
   }
-
-   async verifyCreatedEmployeesAreDisplayed(...employees) {
+  
+  async verifyCreatedEmployeesAreDisplayed(...employees) {
         for (const employee of employees) {
             await expect(
               this.#getEmployeeCard(employee.firstName, employee.lastName, employee.jobTitle)
             ).toBeVisible();
         }
    }
-
-    #getEmployeeCard(firstName, lastName, jobTitle) {
-      const fullName = `${firstName} ${lastName}`;
-      return this.employeeCard
+   
+   #getEmployeeCard(firstName, lastName, jobTitle) {
+        const fullName = `${firstName} ${lastName}`;
+        return this.employeeCard
             .filter({ hasText: fullName })
             .filter({ hasText: jobTitle })
             .first();
-      }
+   }
 };
