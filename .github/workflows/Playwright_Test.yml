@@ -22,8 +22,12 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Run login test before main test to ensure BrightHRLite is up and running
-        run: npx playwright test tests/login.spec.ts
+      - name: Generate .env file
+        env:
+          BRIGHTHRLITE_URL: ${{ vars.BRIGHTHRLITE_URL }}
+          BRIGHTHRLITE_EMAIL: ${{ secrets.BRIGHTHRLITE_EMAIL }}
+          BRIGHTHRLITE_PASSWORD: ${{ secrets.BRIGHTHRLITE_PASSWORD }}
+        run: envsubst < ./setup/env > .env
 
       - name: Run Playwright tests
         run: npx playwright test
