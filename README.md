@@ -17,7 +17,7 @@ This project is an automated test suite for the BrightHR Lite application, focus
 
 - Node.js 24+ installed
 - npm (comes with Node.js)
-- Valid BrightHR Lite credentials
+- Manually create and verify a BrightHT Lite account at https://sandbox-app.brighthr.com/lite
 
 ## Installation
 
@@ -31,13 +31,14 @@ This project is an automated test suite for the BrightHR Lite application, focus
    npx playwright install
    ```
 
-3. **Configure environment variables for Running Locally**
-   Create an `.env` file in the root directory:
+3. **Configure environment variables for running and testing locally**
+   Create an `.env` file in the root directory and use the credentials you used to create your BrightHR Lite account:
    ```
    URL=https://sandbox-login.brighthr.com/login
    EMAIL=your-email@example.com
    PASSWORD=your-password
    ```
+Note: .env file containing user credentials **MUST NOT** be commited to repository
 
 ## Running Tests
 
@@ -98,7 +99,7 @@ Key settings:
 
 ## CI/CD Pipeline
 
-Tests are run manually on workflow dispatch, however can easily be expanded to run automatically on pushes to main branch or on pull requests on the same.
+Tests are currently on run on manual workflow dispatch, however can easily be expanded to run automatically on pushes to main branch or on pull requests on the same.
 
 ### Workflow Features
 - Node 24 runtime
