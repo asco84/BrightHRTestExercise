@@ -17,7 +17,7 @@ This project is an automated test suite for the BrightHR Lite application, focus
 
 - Node.js 24+ installed
 - npm (comes with Node.js)
-- Manually create and verify a BrightHT Lite account at https://sandbox-app.brighthr.com/lite
+- Manually create and verify a BrightHR Lite account at https://sandbox-app.brighthr.com/lite
 
 ## Installation
 
